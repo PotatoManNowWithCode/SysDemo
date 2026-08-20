@@ -1,0 +1,78 @@
+import os
+import discord
+import aiohttp
+from discord import app_commands
+
+TOKEN = os.getenv("DISCORD_TOKEN", "PotatotKey")
+TIMETOAPI = os.getenv("HES_TIMETOAPI", "TIMETOAPI")
+API_URL = "https://api.hydroelectric.com/v2/status"
+
+intents = discord.Intents.default()
+
+class StatusBot(discord.Client):
+    def __init__(self, *, intents: discord.Intents):
+        super().__init__(intents=intents)
+        self.tree = app_commands.CommandTree(self)
+        self.session = None
+
+    async def setup_hook(self)
+        self.session = aiohttp.ClientSession()
+        await self.tree.sync()
+
+    async def close(self):
+        await super().close()
+        if self.session:
+            await self.session.close()
+
+client = StatusBot(intents=intents)
+
+async def get_status():
+    headers = {
+        "Authorization": f"Bearer {TIMETOAPI}"
+    }
+    try:
+        async with client.session.get(API_URL, headers=headers, timeout=5) as response:
+            if response.status == 200:
+                return await response.json()
+            
+            error_text = await response.text()
+            print(f"API error code {response.status}: {error_text}")
+            return None
+    except Exception as e:
+        print(f"Network error: {e}")
+        return None
+
+@client.tree.command(name="status", description="Retrieve the current HES system status")
+async def status(interaction: discord.Interaction):
+    # Defer response to handle API latency
+    await interaction.response.defer()
+    
+    data = await get_status()
+    
+    # Handle unavailable API safely
+    if not data or "status" not in data:
+        embed = discord.Embed(
+            title="Gang smn. went wrong :sob:",
+            description="Unable to fetch HES status.",
+            color=discord.Color.red()
+        )
+        await interaction.followup.send(embed=embed)
+        return
+
+    status_data = data["status"]
+    
+    embed = discord.Embed(
+        title="HES System Status",
+        color=discord.Color.green()
+    )
+    embed.add_field(name="Website", value=status_data.get("website", "unknown").capitalize())
+    embed.add_field(name="Roblox", value=status_data.get("roblox", "unknown").capitalize())
+    
+    await interaction.followup.send(embed=embed)
+
+@client.event
+async def on_ready():
+    print(f"Logged in as {client.user}")
+
+if __name__ == "__main__":
+    client.run(TOKEN)
