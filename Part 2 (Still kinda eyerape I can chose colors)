@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HES Systems Department</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+  --bg: #d39b53;
+  --panel: #e0b455;
+  --panel-2: #bb7c29;
+  --border: #e65555;
+  --text: #2bff0083;
+  --muted: #ff0000;
+  --accent: #d6ac37;
+  --accent-2: #4da3ff;
+  --warning: #ff0000;
+  --good: #4ce28c;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(55,214,194,.09), transparent 28rem),
+    radial-gradient(circle at 10% 45%, rgba(77,163,255,.06), transparent 24rem),
+    var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+.topbar {
+  min-height: 78px;
+  padding: 14px 6vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(7,16,24,.88);
+  backdrop-filter: blur(14px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 44px; height: 44px;
+  border: 1px solid rgba(55,214,194,.45);
+  border-radius: 10px;
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: rgba(55,214,194,.08);
+}
+.brand h1 { margin: 0; font-size: 15px; }
+.brand span { color: var(--muted); font-size: 11px; }
+
+nav { display: flex; gap: 7px; flex-wrap: wrap; justify-content: flex-end; }
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 11px;
+  border-radius: 7px;
+  font-size: 13px;
+}
+nav a:hover { color: var(--text); background: var(--panel); }
+
+main { width: min(1180px, 88vw); margin: auto; }
+
+.hero {
+  min-height: 370px;
+  padding: 75px 0 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+.eyebrow {
+  margin: 0 0 9px;
+  color: var(--accent);
+  font: 700 11px "JetBrains Mono", monospace;
+  letter-spacing: 1.8px;
+}
+.hero h2, .section h2 {
+  margin: 0;
+  letter-spacing: -1.5px;
+}
+.hero h2 { font-size: clamp(32px, 5vw, 55px); max-width: 680px; }
+.hero-text { color: var(--muted); max-width: 650px; margin: 15px 0 25px; }
+
+.primary-btn {
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #061310;
+  padding: 12px 17px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s, opacity .2s;
+}
+.primary-btn:hover { transform: translateY(-2px); }
+.primary-btn.loading { opacity: .7; }
+
+.refresh-text { margin-left: 12px; color: var(--muted); font-size: 12px; }
+
+.hero-card {
+  width: 210px; height: 210px;
+  flex: 0 0 auto;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(55,214,194,.10), transparent 65%), var(--panel);
+  box-shadow: 0 0 50px rgba(55,214,194,.08);
+}
+.hero-card strong { font-size: 13px; letter-spacing: 1px; }
+.hero-card span { color: var(--good); font: 700 12px "JetBrains Mono", monospace; margin-top: 4px; }
+.pulse {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--good);
+  box-shadow: 0 0 0 8px rgba(76,226,140,.08), 0 0 22px var(--good);
+  margin-bottom: 15px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 70px;
+}
+.stat-card, .panel, .status-list, .contact-panel {
+  background: rgba(13,26,36,.82);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.stat-card { padding: 20px; }
+.stat-label { display: block; color: var(--muted); font: 600 10px "JetBrains Mono", monospace; }
+.stat-card strong { display: block; margin: 8px 0 3px; font-size: 27px; }
+.stat-card small { color: var(--muted); font-size: 11px; }
+
+.section { margin-bottom: 70px; }
+.section-heading { display: flex; justify-content: space-between; align-items: end; margin-bottom: 18px; }
+.status-key { color: var(--muted); font-size: 11px; }
+.dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--good); margin-right: 5px; }
+
+.status-list { overflow: hidden; }
+.system-row {
+  display: grid;
+  grid-template-columns: 42px 1.7fr 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.system-row:last-child { border-bottom: 0; }
+.system-icon {
+  display: grid; place-items: center;
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  background: #162b39;
+  color: var(--accent);
+  font: 700 11px "JetBrains Mono", monospace;
+}
+.system-info strong { display: block; font-size: 13px; }
+.system-info span { display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }
+.bar { height: 5px; background: #172733; border-radius: 10px; overflow: hidden; }
+.bar span { display: block; height: 100%; background: var(--accent); border-radius: inherit; }
+.badge { font-size: 10px; font-weight: 700; padding: 5px 8px; border-radius: 20px; }
+.badge.good { color: var(--good); background: rgba(76,226,140,.08); }
+.badge.warning { color: var(--warning); background: rgba(243,183,79,.08); }
+
+.two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.panel { padding: 25px; }
+.panel h2 { font-size: 22px; margin-bottom: 22px; }
+.timeline > div { display: grid; grid-template-columns: 50px 1fr; gap: 14px; margin-bottom: 20px; }
+.timeline span { color: var(--accent); font: 700 10px "JetBrains Mono", monospace; padding-top: 2px; }
+.timeline p { margin: 0; color: var(--muted); font-size: 12px; }
+.timeline b { color: var(--text); }
+
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.action-grid button {
+  min-height: 70px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0b1720;
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+}
+.action-grid button:hover { border-color: var(--accent); color: var(--accent); }
+
+.contact-panel {
+  padding: 27px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+.contact-panel h2 { font-size: 22px; }
+.contact-panel p { color: var(--muted); font-size: 12px; max-width: 620px; }
+.contact-info {
+  display: flex; flex-direction: column; justify-content: center;
+  min-width: 210px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.contact-info strong { color: var(--text); margin-bottom: 5px; }
+
+footer {
+  width: min(1180px, 88vw);
+  margin: auto;
+  padding: 22px 0 35px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  color: #607784;
+  font: 10px "JetBrains Mono", monospace;
+}
+
+@media (max-width: 800px) {
+  .topbar { align-items: flex-start; flex-direction: column; }
+  nav { justify-content: flex-start; }
+  .hero { padding-top: 45px; flex-direction: column; align-items: flex-start; }
+  .hero-card { align-self: center; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .system-row { grid-template-columns: 42px 1fr auto; }
+  .bar { display: none; }
+  .two-column { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 500px) {
+  main, footer { width: 92vw; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .system-row { gap: 10px; padding: 15px; }
+  .system-info span { display: none; }
+  .contact-panel { flex-direction: column; }
+  .action-grid { grid-template-columns: 1fr; }
+  .refresh-text { display: block; margin: 10px 0 0; }
+}
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">HES</div>
+      <div>
+        <h1>Systems Department</h1>
+        <span>Internal Operations Portal</span>
+      </div>
+    </div>
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#systems">Systems</a>
+      <a href="#operations">Operations</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="dashboard" class="hero">
+      <div>
+        <p class="eyebrow">Controll panel or smn.</p>
+        <h2>SUP CODE GOONERS.</h2>
+        <p class="hero-text">Dashbord time baby check the stuffz.</p>
+        <button id="refreshBtn" class="primary-btn">↻ Refresh Status</button>
+        <span id="refreshText" class="refresh-text">Last checked just now</span>
+      </div>
+      <div class="hero-card">
+        <div class="pulse"></div>
+        <strong>ALL SYSTEMS</strong>
+        <span>NORMAL</span>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-label">ONLINE SYSTEMS</span>
+        <strong>12 / 12</strong>
+        <small>Is' all right mate</small>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">NETWORK LOAD</span>
+        <strong>42%</strong>
+        <small>Within normal range</small>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">OPEN INCIDENTS</span>
+        <strong>02</strong>
+        <small>Someone should really fix those (meh)</small>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">UPTIME</span>
+        <strong>99.98%</strong>
+        <small>Last 30 days</small>
+      </div>
+    </section>
+
+    <section id="systems" class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">LIVE OVERVIEW</p>
+          <h2>System Status</h2>
+        </div>
+        <span class="status-key"><i class="dot online"></i> Operational</span>
+      </div>
+
+      <div class="status-list">
+        <div class="system-row">
+          <div class="system-icon">NW</div>
+          <div class="system-info"><strong>Roblox/web API</strong><span>*ugh* if AWS is down again-</span></div>
+          <div class="bar"><span style="width:92%"></span></div>
+          <span class="badge good">Operational</span>
+        </div>
+        <div class="system-row">
+          <div class="system-icon">DB</div>
+          <div class="system-info"><strong>Discord Bot_1</strong><span>AutoMod or smn.</span></div>
+          <div class="bar"><span style="width:84%"></span></div>
+          <span class="badge good">Operational</span>
+        </div>
+        <div class="system-row">
+          <div class="system-icon">FS</div>
+          <div class="system-info"><strong>File Services</strong><span>Department shared storage</span></div>
+          <div class="bar"><span style="width:71%"></span></div>
+          <span class="badge warning">"Ooow what does this do??? *Poke Boom*</span>
+        </div>
+        <div class="system-row">
+          <div class="system-icon">AU</div>
+          <div class="system-info"><strong>Authentication Service</strong><span>Internal account services</span></div>
+          <div class="bar"><span style="width:96%"></span></div>
+          <span class="badge good">Operational</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="operations" class="section two-column">
+      <div class="panel">
+        <p class="eyebrow">RECENT ACTIVITY</p>
+        <h2>Operations Log</h2>
+        <div class="timeline">
+          <div><span>21:04</span><p><b>Network check completed</b><br>All core switches responding normally.</p></div>
+          <div><span>20:37</span><p><b>Backup completed</b><br>Nightly operations backup verified.</p></div>
+          <div><span>19:52</span><p><b>File service alert</b><br>Storage utilization crossed 70% "N-No. You do not need a 'Homework folder' with 3 PETABYTES? OF POR-".</p></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <p class="eyebrow">QUICK ACTIONS</p>
+        <h2>Department Tools</h2>
+        <div class="action-grid">
+          <button>System Diagnostics</button>
+          <button>View Incidents</button>
+          <button>Network Tools</button>
+          <button>Maintenance Log</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-panel">
+      <div>
+        <p class="eyebrow">NEED ASSISTANCE?</p>
+        <h2>Systems Department</h2>
+        <p>For internal system issues, maintenance requests, or access problems, do not contact the Systems Department. (Or at least not me)</p>
+      </div>
+      <div class="contact-info">
+        <strong>Systems Desk</strong>
+        <span>Extension 4100</span>
+        <span>idontgetpaidenough@ihatemylife.com</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>HES Systems Department • Internal Use Only</span>
+    <span>v1.0.0.0.10/span>
+  </footer>
+
+  <script>
+    const button = document.getElementById("refreshBtn");
+    const text = document.getElementById("refreshText");
+
+    button.addEventListener("click", () => {
+      button.classList.add("loading");
+      button.textContent = "↻ Checking...";
+      setTimeout(() => {
+        button.classList.remove("loading");
+        button.textContent = "✓ Status Updated";
+        text.textContent = "Last checked just now";
+        setTimeout(() => button.textContent = "↻ Refresh Status", 1800);
+      }, 900);
+    });
+  </script>
+</body>
+</html>
